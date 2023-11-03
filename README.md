@@ -197,3 +197,7 @@ pip install -r requirements.txt
 ```
 
 
+
+
+
+pip install suds-community
