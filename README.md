@@ -18,6 +18,27 @@ Les documents fusionnés seront marqués "imprimé" dans un index statut de fusi
 
 Le PDF "final", n'a pas à être stocké dans Zeendoc, il peut juste être téléchargé sur le poste de l'utilisateur qui déclenche la fusion.
 
+
+## Estimation du temps de développement
+
+| Tâche                                    | Temps | etat     |
+| ---------------------------------------- | ----- | -------- |
+| Diagramme de séquence                    | 2h    | fait     |
+| Connexion à Zeendoc                      | 3h    | fait     |
+| Récupération des recherches enregistrées | 1h    | en cours |
+| Récupération des documents               | 1h    |          |
+| Tri/fusion des documents                 | 2h    |          |
+| Documentation                            | 2h    |          |
+| Total                                    | 11h   |          |
+
+
+
+
+
+
+
+
+
 ## schema UML
 
 ## diagramme de séquence
