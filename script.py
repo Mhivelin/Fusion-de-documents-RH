@@ -1,46 +1,49 @@
-# import
-# pour la connexion SOAP
+import requests
+
 import PyPDF2
-from zeep import Client
-
-# Connexion à Zeendoc
 
 
-# Import des bibliothèques
-import PyPDF2
-import zeep
+def call_zeendoc_login(email, cpassword, Url_client):
+
+    password = ""
+
+    # Construire l'URL en utilisant la variable Url_client
+    url = f'https://armoires.zeendoc.com/{Url_client}/ws/3_0/Zeendoc.php'
+    headers = {
+        'Content-Type': 'text/xml; charset=utf-8',  # Spécifiez le type de contenu SOAP
+    }
+
+    # Remplacez le contenu de la requête avec le corps SOAP
+    data = f"""
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:Zeendoc">
+       <soapenv:Header/>
+       <soapenv:Body>
+          <ns1:login>
+             <Login>{email}</Login>
+             <Password>{password}</Password>
+             <CPassword>{cpassword}</CPassword>
+          </ns1:login>
+       </soapenv:Body>
+    </soapenv:Envelope>
+    """
+
+    # Envoyez la requête POST
+    response = requests.post(url, data=data, headers=headers)
+
+    # Vérifiez la réponse
+    if response.status_code == 200:
+        return response.content
+    else:
+        return f'Erreur lors de la requête. Code de statut : {response.status_code}'
 
 
-class ZeenDoc:
-    def __init__(self, UrlClient="deltic_demo"):
-        self.wsdl = f"https://armoires.zeendoc.com/{UrlClient}/ws/3_0/wsdl.php?WSDL"
-        self.service_location = f"https://armoires.zeendoc.com/{UrlClient}/ws/3_0/Zeendoc.php"
-        self.service_uri = f"https://armoires.zeendoc.com/{UrlClient}/ws/3_0/"
-        self.client = zeep.Client(
-            self.wsdl, transport=zeep.Transport(operation_timeout=10))
+# Exemple d'utilisation de la fonction
+email = 'marius.hivelin@gmail.com'
+cpassword = 'X?BSh:R92EmyDKi'
+Url_client = 'deltic_demo'
 
-    def connect(self, userLogin, userCPassword):
-        try:
-            # Appel de la méthode 'login' du service SOAP
-            result = self.client.service.login(userLogin, '', userCPassword)
-
-            if hasattr(result, 'Error_Msg'):
-                print(f"Erreur : {result.Error_Msg}")
-            else:
-                print("Connexion réussie")
-                return result
-        except zeep.exceptions.Fault as fault:
-            return fault
-
-
-# Test de connexion
-if __name__ == "__main__":
-    login = "marius.hivelin@gmail.com"
-    CPassword = "X?BSh:R92EmyDKi"
-
-    zeendoc = ZeenDoc()
-    session = zeendoc.connect(login, CPassword)
-    # Vous pouvez utiliser la session pour d'autres opérations Zeendoc si nécessaire.
+response_content = call_zeendoc_login(email, cpassword, Url_client)
+print('Réponse du serveur :', response_content)
 
 
 def fusionDocs(listeDesBulletins, listeDesSyntheses, listeDesNotes, listeDesCourriers):
